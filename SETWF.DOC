@@ -1,4 +1,4 @@
-SETWF  Version 1.42b  (c) 1995 Endre Csat¢
+SETWF  Version 1.42b  (c) 1995 Endre Csato
 
 
 LICENSE
@@ -48,7 +48,7 @@ COMMENTS AND PROBLEMS
 Comments, improvements, suggestions and problems may be sent to
 the Author:
 
-Endre Csat¢               (or in Hungarian: Csat¢ Endre)
+Endre Csato               (or in Hungarian: Csato Endre)
 Hungary
 csatoe@gmail.com
 
@@ -648,7 +648,7 @@ Version 1.39    WSS support, IRQ detection & more               01/09/96
 	- SETWF is no longer *cardware* but if you want to send me a
 	    nice postcard, I'll be pleased.
 
-Version 1.34á                                                   01/02/96
+Version 1.34b                                                   01/02/96
 
 	+ New name: SETWF
 
@@ -661,7 +661,7 @@ Version 1.34á                                                   01/02/96
 
 	+ Added line into SETWF.CFG file to support up to 4 cards
 
-Version 1.33á   The wanted -ee option and more                  09/24/95
+Version 1.33b   The wanted -ee option and more                  09/24/95
 
 	+ -EE option to free up used samples (internal too!)
 	  This option may be required if a program load samples onto
@@ -674,7 +674,7 @@ Version 1.33á   The wanted -ee option and more                  09/24/95
 	- Use file.WFS instead of @file.WFS
 
 
-Version 1.29á   Totally rewritten code & new features		08/24/95
+Version 1.29b   Totally rewritten code & new features		08/24/95
 
 	+ The new code use some XMS (Extended Memory) to store
 	  the program, patch and sample headers. This speeds up
@@ -704,23 +704,23 @@ Version 1.20    New features, bug fixes and cardware            04/03/95
         + The -p option was modified. Added -pp and -pd options.
 
 
-Version 1.16á   Bug fixes and looping                           03/28/95
+Version 1.16b   Bug fixes and looping                           03/28/95
 
-        - V1.16á has a big bug - fixed
+        - V1.16Ã¡ has a big bug - fixed
 
         + Added a new extension to set looping and others.
 	  See USING SETWF!
 
 
-Version 1.11á   Some bug fixes					03/21/95
+Version 1.11b   Some bug fixes					03/21/95
 
-	- V1.1á does not download 16 bit .WAV file. Now it does.
+	- V1.1Ã¡ does not download 16 bit .WAV file. Now it does.
 
 	- It gives an error message if the .WAV sample size greater
 	  than one Megabyte!
 
 
-Version 1.10á   New: WAVE loading				03/16/95
+Version 1.10b   New: WAVE loading				03/16/95
 
 	+ Now SETWF support downloading the simple WAVE file.
 
@@ -759,7 +759,7 @@ Version 1.00    Bug fixes & some new features                   02/20/95
 
 
 
-Version 0.81à   First version                                   02/13/95
+Version 0.81a   First version                                   02/13/95
 
   Not released -- alpha version.
 
