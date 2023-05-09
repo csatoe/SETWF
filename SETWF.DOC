@@ -1,0 +1,767 @@
+SETWF  Version 1.42b  (c) 1995 Endre Csat¢
+
+
+LICENSE
+-------
+
+This program is a public-domain product for private and educational
+use. You may freely copy and use it without any charge.
+
+
+Product names mentioned in this manual may be trademarks or
+registered trademarks of their respective companies and are
+hereby acknowledged:
+  MS-DOS is a product of Microsoft
+  MAUI, RIO, TROPEZ, TROPEZ+, TBS-2000, SETUPSND, Gatekeeper are products of
+    Turtle Beach Systems
+
+
+GREETINGS
+---------
+
+Special thanks to *** Brandon S. Higa in Hawaii ***
+
+Thanks Albert Benkert
+	 for testing on TBS Tropez and ideas
+
+       Dirk Slevogt <ZAPHOD@genesis.informatik.rwth-aachen.de>
+	 for testing and ideas
+
+       Mark Otto <102413.2015@compuserve.com> (Turtle Beach Systems)
+	 for helping to decode WSS files
+
+Greetings to
+	John Cafarella <jcafarel@melbpc.org.au>
+	  the author of the great PATCHMAN Windows utility
+
+	Daniel Baum <Daniel.Baum@stud.uni-karlsruhe.de>
+	  the author of WEMP the best WF module player
+
+	Jimmy Wan <vecna@UMich.edu>
+
+	and all WaveFront users!
+
+
+COMMENTS AND PROBLEMS
+---------------------
+
+Comments, improvements, suggestions and problems may be sent to
+the Author:
+
+Endre Csat¢               (or in Hungarian: Csat¢ Endre)
+Hungary
+csatoe@gmail.com
+
+SYSTEM REQUIREMENTS
+-------------------
+
+AT 386 or above Computer (for best performance)
+
+DOS 3.20 or above (I tested this program under MS-DOS 6.2)
+		  (Brandon has tested this program under MS-DOS 5.0)
+
+Turtle Beach System's MAUI Soundcard with SampleStore capability
+    (or compatible: TROPEZ, TROPEZ+ and RIO, but not MONTEREY - see NOTES.)
+
+
+FEATURES OF SETWF
+-------------------
+  This utility is useful when you want to use a DOS sequencer or any other
+    DOS programs for your WaveFront soundcard.
+  For example:
+  If you play a MIDI file but the volume is too high then you can
+    see the peak levels (in a DOS-shell) and set the volume you want.
+  If you want to download a WaveFront Bank, Program, DrumKit file or a
+    mono or stereo WAVE file in the DOS, you can do it.
+  And now SETWF support John Cafarella's WFS file format and TBS's WSS
+    file too!
+  You can get the WaveFront and Channel status.
+  SETWF can list all of the programs, patches, and samples which are
+    in the card.
+  For more features see OPTIONS.
+
+
+NOTE TO SETWF.CFG
+-------------------
+
+  You can modify the setting in the setwf.cfg but remember that this
+  document refer to the default settings!
+  SETWF.CFG contains remarks for each settings therefore they are not
+  detailed in this document.
+  (The config file must be in the same directory as the SETWF !!!)
+
+
+USING SETWF
+-------------
+
+  SETWF [ [/|- options]  [filename.ext[,][Xx][Yy]... ]  [/|- options] ]...
+
+  []  means optional
+  |   means exclusive or
+  ... means etc.
+
+  If you don't add any parameters you'll get a short message on how to get
+    help.
+
+  If you specify a filename it means you want to download a file.
+
+  Now the valid extensions are:
+                                     .WFB      - Bank file
+                                     .WFP      - Program file
+                                     .WFD      - DrumKit file
+				     .WAV      - WAVE file
+				     .WFS      - WaveFront Set file
+				     .WSS      - WaveFront Sample Set file
+
+  - .WFB files
+
+	 The software download all samples, patches, drumkits and programs
+	 that are in the Bank.
+	 This action may overwrite the internal samples.  See NOTES.
+	 You need not specify any other parameters because all rooms for
+	 the samples and patches are fixed in the .WFB file.
+
+	 Sample: SETWF gm_maui.wfb
+
+  - .WFP file
+
+         Downloading a program and its patches and samples.
+
+	 You can specify parameters:   [,][Px][Ay][Sz]
+
+             ,    You can add a comma after the filename but it is not
+                   necessary. (I must change the parameter interpreter,
+		   because calling SETWF from a batch file, the
+                   comma separates the parameter into parts.)
+
+             x    the program number where you want to download the program
+
+             y    the patch number where you want to download the first
+                   patch. (2nd patch: y+1)
+
+             z    the sample number where you want to download the first
+                   sample. (2nd sample: z+1)
+
+         If you do not specify one or more of these parameters,
+	   SETWF will use the defaults stored in .WFP.
+
+         If y or z (default or specified) points to a Used Sample
+	   or Patch, SETWF will search for an Empty room.
+
+	 If you want to know where SETWF loads samples and patches,
+           use parameter -P and debug downloading. (The number in brackets
+           is the position number where it loads to. If there is an 'R'
+	   after the number, it means SETWF relocated it from the original
+           position.)
+
+         If you are not an advanced user, specify only the x parameter.
+
+	 E.g.:     SETWF myvoice.wfp,P10    Load the myvoice PROGRAM file
+					      into "Music Box" General Midi
+                                              Program.
+
+  - .WFD file
+
+	 Same as the .WFP but the x parameter is not used.
+
+
+  - .WAV file   ( SampleStore in DOS ! )
+
+	 Downloading a Riff Wave file using default program and patch.
+
+	 You can specify parameters [,][Px][Vy][Kz][Vy][Kz][B|I][R|N][D|E|L][a-b]
+
+	     ,    You can add a comma after the filename but it is not
+		   necessary. (I must change the parameter interpreter,
+		   because calling SETWF from a batch file, the
+		   comma separates the parameter into parts.)
+
+	     Px   the program or drum number where you want to use the
+		   wave sample. x<=127 value means normal program and
+		   x>=128 value means DRUM number x-128.
+		   (default: config.file)
+
+	     Vy   the volume of the program
+
+	     Kz   the MIDI Root Key
+
+	     (B)i-directional Looping (this cause Enabling too)
+
+	     (R)everse, (N)o reverse
+
+	     (D)iasble Looping
+
+	     (E)nable (L)ooping, but also work 'E'
+
+	     (M)ono sample loading though the .WAV file type is stereo
+
+	     a = Offset to start of loop (default: 0)
+
+	     b = Offset to end of loop (default: SampleSize)
+
+	 If you do not specify one or more of these parameters,
+	   SETWF will use the defaults stored in SETWF.CFG.
+
+
+	 Default LOOPING:
+
+	 If the .WAV file contains Loop information, SETWF will
+	 use it to determine the Loop Points and set the loop flag on.
+
+	 If the .WAV file does not contains Loop Points, the sample will
+	 not loop.
+
+	 (You can set or reset the Loop Points with WaveSe!)
+
+
+	 With this options you can overwrite this method.
+
+			E.g.:
+
+                             file.wav,L100-200     or file.wavL100-200
+                                Enable looping sample offset 100 to 200.
+                                And you see the comma is optional.
+
+                             file.wav,100-200
+                                Set Loop Points Only, Looping enabled if
+                                the file contains Loop Points. So these
+                                options overwrite the Loop Points settings
+                                from the file.
+
+                             file.wav,D
+				Disable looping
+
+                             file.wav,R
+                                This switch tells the WaveFront synth to
+                                play the sample in reverse!
+
+                             file.wav,B
+                                Enable bi-directional looping.
+
+                             file.wav,L   or  file.wav,E
+                                It cause Enabling.
+                                Looping Offsets from the file or the file
+                                does not contains them use the default
+                                Looping Points: 0 and SampleSize.
+
+			And you can mix these switches!
+
+  - .WFS file		 WaveFront Set file format.
+			 A simple text file contains filenames and options.
+			 You can specify a text file which similar to John
+			 Cafarella's WFS file but it may contains not only
+			 filenames to download and MIDI files to play.
+			 You can use not only downloading parameters and
+			 remarks in this file. See the sample WFS file!
+
+  - .WSS file		 SETWF now support TB's WSS file format which
+			 contains information of the set of .WAV files.
+			 More information in the User's Manual of your
+			 card.
+
+
+
+
+OPTIONS
+-------
+
+-------------------------------------------
+Parameter x-y (where min<=x<=y<=max) means:
+
+Parameter        Range
+
+ x               [x..x]
+ x-              [x..max]
+ x-y             [x..y]
+ -y              [min..y]
+ nothing         [min..max]
+-------------------------------------------
+
+       -?               Shows help screen about options.
+
+       -Bxxx            Set Base I/O Port Address.
+			 The valid settings are:
+			 330,338,320,300,290,260,230,210
+
+       -MPU             Force SETWF to use the slow standard MPU-401 MIDI
+			 interface port instead of Host Command Port.
+			 It useful if you have no Host Command Port e.g.
+			 you have a Rio card.
+
+       -1 -2 -3 -4      Force SETWF to load the Base I/O Port Address and
+			 the required interrupt line value from SETWF.CFG
+			 and use it. It simplify using more than one card.
+			 You can also specify in the config file that
+			 that card is using MPU interface or not.
+			 (See -B -Q -MPU options.)
+
+       -P               Set pause mode for listing and debug mode for
+			 downloading.
+
+       -PP              Set pause mode for listing
+
+       -PD              Set debug mode for downloading.
+
+			When you specify -Px, the listing and/or downloading
+			 will stop and wait for a keystroke between
+			 two patches, samples, etc.
+
+			You are in Pause mode if 'KEY' blinks
+			 on the right side of the screen.
+
+			If you press <ESC> the program will stop
+			 or if you press <P> pause and/or debug mode will
+			 be switched off.
+
+			These modes will be ignored if you redirect the
+			 standard output.
+
+       -+		Force SETWF to update the information stored in
+			 the Extended Memory. Use this option if SETWF
+			 does not refresh automatically. Anyway SETWF ask
+			 the card about the free sample memory and if it
+			 does not equal the stored one in the Extended
+			 Memory SETWF will refresh the Extended Memory.
+
+       --		Force SETWF to free up the allocated Extended
+			 Memory. If you want to use SETWF again it will
+			 allocate the Extended Memory again and load the
+			 data of the card. It takes some seconds.
+
+       -XSfilename.ext  SETWF saves the used Extended Memory to the file
+			 you specified. It can be loaded by the -XL
+			 option.
+
+       -XLfilename.ext  SETFW loads the saved Extended Memory file to
+			 avoid the gathering information from the card.
+
+       -Qx              SETWF try to use the card with interrupt x.
+			 (It works only on cards which aren't using the
+			 slow MPU port like Rio! See -MPU option.)
+			 If it doesn't work properly, SETWF calls the
+			 SETUPSND utility to initialize the card with
+			 parameter /ix.
+
+       -R               Like -Q option but it causes initializing
+			 always. Use -Q option to specify the interrupt
+			 line.
+
+       -!		This options do nothing but useful if you want to
+			 initialize the card from the AUTOEXEC.BAT file
+			 if it was not. (But does not allocate the Extended
+			 Memory block.)
+
+       -Vx              Set Synthesizer Volume (0..127)
+
+       -Nx              Set Number of Voices (24..32)
+
+       -Tx              Set Master Tuning (-8192..8191)
+			 2048 per an octave, 2048/12 per half note
+
+       -C[E|D]x-y       (E)nable or (D)isable Synth Channels [1..16]
+
+       -D[E|D]x-y       (E)nable or (D)isable Enhanced Drum Program
+			 on Channels [1..16].
+			Note: After Disabling EDP on a channel you must
+			 send a program change MIDI message for it to take
+			 effect.
+
+       -I[E|D]          (E)nable or (D)isable MIDI-In to Synth
+
+       -M[E|D]          (E)nable or (D)isable Virtual MIDI Mode
+
+       -O               Report Peak Output Levels.
+			 The number at the right side of the Peak Output
+			 Level indicator is the Saturation Count.
+			 The number in brackets is the current volume of
+			 the card.
+
+			 Keys:
+				 + or -         Set Volume
+				 ESC            Stop
+
+       -LU              Report Used/Unused/Empty Samples and
+			 Unused Patches.
+
+       -LHx-y           Show structure of Programs [0..127] or
+			 show structure of Enhanced Drum Programs [128..255]
+
+       -LRx-y           List Programs [0..127]
+
+       -LPx-y           List Patches [0..255]
+
+       -LSx-y           List Samples [0..511]
+
+       -LDx-y           List Enhanced Drum Programs [0..127]
+
+       -L               -LU, -LH, -LR, -LP, -LS and -LD options all in one
+
+       -U               Delete All Unused Samples from Sample Memory
+
+       -Ex-y            Delete Samples from Sample Memory
+			 (Deletes only non-internal samples)
+
+       -EEx-y		Delete Samples from Sample Memory
+			 (Delete the overwritten internal samples too!)
+
+       -S               Print WaveFront Status.
+
+       -SC              Print MIDI Channel Status.
+
+       -W[Px|Sx][Vy][B|I][R|N][D|E|L][a-b]
+
+			Use this options only to modify the downloaded
+			 WAVE file (or any program) header(s).
+
+			Useful when you want to set the best loop points,
+			 the best volume or others
+
+			The syntax is the same as I wrote above at the WAVE
+			 file loading. The only difference is the you can
+			 specify the sample number direct with 'Sx'.
+			 (With this you can modify a drum sample header.)
+
+
+T I P S
+-------
+
+1. Here is a line from my autoexec.bat file:
+
+   setwf /q2 /xlc:\maui\maui.bnk
+
+   This line performs a card test and it isn't available at default port
+   or it doesn't use interrupt 9/2 the card will be initialized by calling
+   SETUPSND as SETWF.CFG file specifies it.
+
+   How to make the maui.bnk file?
+
+     Run SETWF /r /xsc:\maui\maui.bnk
+
+   The port and interrupt addresses are set in the config file.
+   And I'm using the maui.drv version 1.3 under Win/Win95 therefore after
+   exiting Win/Win95 the soundcard doesn't requires re-initializing.
+
+2. I don't want to include a skipping option into SETWF but there is
+   the real line from my AUTOEXEC.BAT. The simple SHIFT.COM file is 15
+   bytes long: B8 00 00 8E C0 26 A1 17 04 24 0F B4 4C CD 21
+   It set the errorlevel if the SHIFT or CTRL or ALT key are pressed.
+   (It reads the value of the [0:0417] memory address.)
+   And I'm using the Symantech Corporation's NDOS command interpreter.
+
+   @echo off
+   c:\shift.com
+   if errorlevel == 8 goto skip
+   setwf /q2 /xlc:\maui\maui.bnk
+   quit
+   :skip
+   echo *** Maui skipped ***
+
+   This skips the card testing and initializing if the ALT key is pressed.
+
+3. Every time I need to re-initialize the card I just run
+
+     SETWF /r /xlc:\maui\maui.bnk
+
+4. If you have more than one card then specify the settings of your cards
+    (up to 4) in the SETWF.CFG and you can reference to them simply:
+
+    SETWF /1 ...
+    SETWF /2 ...
+
+
+
+ERROR MESSAGES
+--------------
+
+No MPU device found
+
+	   You get this message if the card did not answer at the base port.
+	   If SETWF doesn't find a WaveFront card at the specified base
+	    address it calls SETUPSND to initialize the card.
+	   If that does not work try using another base port address.
+
+Illegal Port address
+
+	   See the correct base port addresses in OPTIONS under option -B.
+
+Illegal Volume Settings
+
+	   The volume parameter must be range 0..127
+
+Illegal Number of voices
+
+	   The voices parameter must be range 24..32
+
+Illegal Synthesizer Tuning
+
+	   The Tuning parameter must be range -8192..8191
+
+Illegal Channel Number
+
+	   The Channel parameter must be range 1..16
+
+Illegal Parameter
+
+           The range or downloading parameters are not valid.
+
+Could not open file
+
+           The software could not open the file you specified or
+             fixed in the .WFx file. E.g. the file does not exist.
+           Correct the filename or use WavePatch(TM) to correct the
+             .WFx file.
+
+File read error
+
+	   The file you specified or fixed in the .WFx file is too short.
+
+Not enough memory
+
+           Not enough DOS memory.
+           The software is unable to allocate a small 32K buffer.
+           Free up more DOS memory!
+
+Too old version
+
+           The program only handles version 1.2 or above .WFx files.
+
+Not enough WaveFront Sample Memory
+
+	   The Free Sample Memory in the card is too small for downloading
+             the .WFx or .WAV file!
+           Use -E, -EE or -U to free up memory.
+
+Invalid File Type
+
+	   The file you specified is not a WaveFront BANK, PROGRAM, DRUMKIT,
+	     WAVE, WaveFront Set or Wavefront Sample Set file. The valid
+	     extensions are: WFB, WFP, WFD, WAV, WFS, WSS.
+
+Couldn't set Internal Sample
+
+	   This message occurs when the software is unable to modify
+	     the sample header of an internal sample because it was deleted.
+	   Use SETWF -R to resolve this problem!
+
+Not enough sample ROOM
+
+	   You want to download more samples than are free in the card.
+	   Use -E, -U or -EE.
+
+Not enough patch ROOM
+
+	   You want to download a .WFx file which contains more patches
+	     than are free in the card.
+	   Use .WFB instead of .WFP!
+
+Associated WAVE file error
+
+	   The associated file in the .WFx is not a WAVE file.
+	   Use WavePatch to correct it!
+
+The sample size greater than 1 Megabyte
+
+	   You want to download a .WAV file which greater than one megabyte.
+
+MPU ERROR: Out of Sample memory
+
+	   While downloading, the soundcard run out of free sample memory.
+           Use -E -U or in some case use -EE.
+
+Error allocating Extended Memory
+	   
+	   You have not enough Extended Memory (XMS) to use SETWF.
+	   Free up some XMS.
+
+The MPU device is used by another program
+
+	   Using MIDI interface <timeout> error ocourred. Maybe another
+	   program hooked the MIDI messages.
+
+User break!
+
+	   If you want to break the slow downloading via MPU port just
+	   press the ESC key!
+
+File error while saving used Extended Memory
+
+	   An invalid filename or not enough disk space cause this message.
+
+!!! If any other MPU ERROR messages occurred please send it to the author. !!!
+
+
+NOTES
+-----
+
+1. This program works on MAUI or compatible soundcards but doesn't work on
+   MONTEREY or compatibles because this program uses Host Commands or MPU
+   commands. MONTEREY and TAHITI + RIO have no standard MPU port.
+
+2. This program contains some routines like the Gatekeeper's routines.
+   Like the Gatekeeper 'remembers' the names of the current samples and
+   patches, this program uses some Extended Memory Block to store the names.
+
+3. Bibliography:
+
+     - ICS WaveFront Interface for Turtle Beach Systems Maui
+
+     - The WavePatch File Formats and Gatekeeper API V1.3
+
+     - Patch and Program Documentation for Turtle Beach Systems Maui and Rio
+
+     (All files available by anonymous FTP: ftp.Hawaii.Edu /outgoing/Maui)
+
+
+FUTURE
+------
+
+- direct PAT loading without using any other converter
+
+
+
+HISTORY
+-------
+
+Version 1.40    Bug fixes                                       01/14/96
+
+	- Bug fixes (options E, EE, W) & minor changes
+
+
+Version 1.39    WSS support, IRQ detection & more               01/09/96
+
+	+ Added M switch to download a stereo WAVE file as mono.
+
+	+ Added -xs option to save the used XMS data. See TIPS!
+
+	+ Added -xl option to load the saved XMS data
+
+	+ Added -q option to detect that the wavefront card is
+	  initialized by the required interrupt or is not.
+
+	+ Added -r option to initialize the card by calling
+	  SETUPSND.EXE
+
+	+ Added WSS support.
+
+	- Minor bug fixes
+
+	- SETWF is no longer *cardware* but if you want to send me a
+	    nice postcard, I'll be pleased.
+
+Version 1.34á                                                   01/02/96
+
+	+ New name: SETWF
+
+	- Minor bug fixes.
+
+	+ Added -1 -2 -3 -4 options to use easier up to 4 cards
+
+	+ Added -mpu option to use MIDI interface instead of HOST port
+	  (RIO support via MPU-401 interface.)
+
+	+ Added line into SETWF.CFG file to support up to 4 cards
+
+Version 1.33á   The wanted -ee option and more                  09/24/95
+
+	+ -EE option to free up used samples (internal too!)
+	  This option may be required if a program load samples onto
+	  the room of an internal sample. (Such program is WEMP -
+	  WaveFront Extended Module Player, the best MOD player by
+	  Daniel Baum).
+
+	- A lot of bug fixes and some optimizing.
+
+	- Use file.WFS instead of @file.WFS
+
+
+Version 1.29á   Totally rewritten code & new features		08/24/95
+
+	+ The new code use some XMS (Extended Memory) to store
+	  the program, patch and sample headers. This speeds up
+	  the downloading when you load more than one files.
+
+	+ SETWF calls the SETUPSND if the MPU is not initialized.
+	  (And also set the exit code of SETWF.)
+
+	+ Bug fixes when using redirection.
+
+	+ Support WFS (John Cafarella's WaveFront Set) file format.
+
+	+ Support playing MIDI file, included in the WFS file, with
+	   your favourite player.
+
+	+ Added options: --, -+, -!
+
+Version 1.20    New features, bug fixes and cardware            04/03/95
+
+	+ A new -w option to modify the settings of a downloaded file.
+
+        + The syntax of the WAVE and .WFB loading parameters was modified.
+	   See 'using SETWF' section for details.
+
+	+ New config file for the default settings. See 'SETWF.CFG'.
+
+        + The -p option was modified. Added -pp and -pd options.
+
+
+Version 1.16á   Bug fixes and looping                           03/28/95
+
+        - V1.16á has a big bug - fixed
+
+        + Added a new extension to set looping and others.
+	  See USING SETWF!
+
+
+Version 1.11á   Some bug fixes					03/21/95
+
+	- V1.1á does not download 16 bit .WAV file. Now it does.
+
+	- It gives an error message if the .WAV sample size greater
+	  than one Megabyte!
+
+
+Version 1.10á   New: WAVE loading				03/16/95
+
+	+ Now SETWF support downloading the simple WAVE file.
+
+
+Version 1.03    Bug fixes & some new features                   02/27/95
+
+        + OPTION -O: Added keys to set volume
+
+        - Changes to support downloading Rio, Tropez, etc. files
+
+	- Some major bug fixes
+
+
+
+Version 1.00    Bug fixes & some new features                   02/20/95
+
+        + For -C -D -L options you can specify a range.
+
+        + Added -LU options to report Used/Unused/Empty Patches & Samples
+
+        + Added -LH options to show the program-patch-sample structure.
+
+        + Added -U options to delete all unused samples from memory.
+
+        + Added -E options to delete samples you specify.
+
+        + Removed -F options.  You can specify directly a filename
+          and the room of the program, patch, or sample.
+
+        + Now you can download any type of .WFx file (it may contain
+          INTERNAL, EMBEDDED or non-embedded WAVE samples)
+
+        + Now there is a calculation for best patch and sample room.
+
+        - A lot of bug fixes
+
+
+
+Version 0.81à   First version                                   02/13/95
+
+  Not released -- alpha version.
+
+
+                             End of document.
