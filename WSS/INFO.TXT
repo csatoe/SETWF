@@ -1,0 +1,38 @@
+The .WSS format uses the Microsoft Foundation classes'
+Serialize functions to store the Objects representing
+the Program and Patch data to the disk.
+
+The Save function first calls the Serialize function in 
+SAMPINFO.CPP which in turn calls the Serialize function
+in CPROGRAM.CPP and then calls the Serialize function
+in CPATCH.CPP four times. The .WSS file generally follows
+the following format:
+
+Byte #      Meaning
+------      -------
+1 - 2       Number of samples stored/referenced in .WSS (WORD)
+3 - 4       FFFF (Microsoft stuff)
+5 - 6       0100
+7 - 8       0B00
+9 - n       Archived data
+
+What is really happenning here is that all of the samples
+are stored in a linked list of CSampleInfo objects. When
+these get archived via the Serialize function, the object
+records the number of objects and some other data (like size -
+you'll have to figure some of this out) and then starts storing
+the data that appears in the CSampleInfo's Serialize function
+( ar << m_FileName; ar << m_SampleName;  etc.) to the disk.
+
+As I understand it, all of the Microsoft Serialize functions
+default to storing values as a WORD. This may or may not be
+true. By looking at the .WSS file you will see the ASCII strings
+stored inside. These always appear as the file name followed
+by the sample name. 
+
+You will need to do some work regarding figuring out the format
+because we always relied on Microsoft's serialization and 
+archiving format.
+
+Mark Otto
+Turtle Beach Systems
