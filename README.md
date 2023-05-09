@@ -1,2 +1,2 @@
 # SETWF
-SETWF -DOS Utility to setup TB's WF cards, download files, report status and SampleStore in DOS. Now WFS/WSS file and Rio support!
+SETWF -DOS Utility to setup Turtle Beach's WaweFront cards, download files, report status and SampleStore in DOS. WFS/WSS file and Rio support.
